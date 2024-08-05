@@ -1,7 +1,9 @@
 package ru.otus.kovaleva.transfer.service.core.backend.services;
 
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 import ru.otus.kovaleva.transfer.service.core.api.dtos.CreateAccountDto;
 import ru.otus.kovaleva.transfer.service.core.backend.entities.Account;
 import ru.otus.kovaleva.transfer.service.core.backend.exceptions.AppLogicException;
@@ -10,6 +12,8 @@ import ru.otus.kovaleva.transfer.service.core.backend.repositories.AccountsRepos
 import java.util.List;
 import java.util.Optional;
 
+@Service
+@RequiredArgsConstructor
 public class AccountsService {
 
     private final AccountsRepository accountsRepository;
