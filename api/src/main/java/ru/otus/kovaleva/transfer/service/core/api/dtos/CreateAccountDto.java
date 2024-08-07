@@ -10,5 +10,7 @@ import java.math.BigDecimal;
 @Data
 @Schema(description = "ДТО для создания нового счета")
 public class CreateAccountDto {
+
+    @Schema(description = "Начальный баланс счета", required = true) //мин баланс, макс баланс??
     private BigDecimal initialBalance;
 }

@@ -39,9 +39,7 @@ public class AccountsController {
 
     @Operation(summary = "Получение информации о всех счетах пользователя")
     @GetMapping
-    public AccountsPageDto getAllAccounts(
-            @RequestHeader Long clientId
-    ) {
+    public AccountsPageDto getAllAccounts(@RequestHeader Long clientId) {
         return new AccountsPageDto(accountsService.getAllAccounts(clientId).stream()
                 .map(entityToDto).collect(Collectors.toList()));
     }
