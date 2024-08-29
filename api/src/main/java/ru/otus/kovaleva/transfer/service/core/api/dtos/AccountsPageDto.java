@@ -10,9 +10,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Schema(description = "нформация о счетах клиента")
+@Schema(description = "Информация о счетах клиента")
 public class AccountsPageDto {
 
-    @Schema(description = "Список счетов клиента")
+    @Schema(description = "Список счетов клиента", required = true)
     private List<AccountDto> items;
 }

@@ -5,11 +5,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.otus.kovaleva.transfer.service.core.api.dtos.CreateAccountDto;
-import ru.otus.kovaleva.transfer.service.core.api.dtos.TransferDto;
 import ru.otus.kovaleva.transfer.service.core.backend.entities.Account;
 import ru.otus.kovaleva.transfer.service.core.backend.exceptions.AppLogicException;
 import ru.otus.kovaleva.transfer.service.core.backend.repositories.AccountsRepository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -35,8 +35,12 @@ public class AccountsService {
     }
 
     public Account createNewAccount(Long clientId, CreateAccountDto createAccountDto) {
-        if (createAccountDto.getInitialBalance() == null) {
-            throw new AppLogicException("VALIDATION_ERROR", "Создаваемый счет не может иметь null баланс");
+        if (createAccountDto.getInitialBalance().compareTo(BigDecimal.ZERO) <= 0 || createAccountDto.getInitialBalance() == null) {
+            throw new AppLogicException("VALIDATION_ERROR", "Создаваемый счет не может иметь 0 или меньше баланс");
+        }
+
+        if (createAccountDto.getInitialBalance().compareTo(BigDecimal.valueOf(1_000_000L)) > 1_000_000L) {
+            throw new AppLogicException("VALIDATION_ERROR", "Создаваемый баланс счета не может быть больше 1_000_000");
         }
         Account account = new Account(clientId, createAccountDto.getInitialBalance());
         account.setAccountNumber(createAccountNumber());

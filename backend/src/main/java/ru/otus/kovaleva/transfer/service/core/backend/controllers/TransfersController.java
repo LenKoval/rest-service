@@ -8,8 +8,7 @@ import ru.otus.kovaleva.transfer.service.core.api.dtos.*;
 import ru.otus.kovaleva.transfer.service.core.backend.entities.Transfer;
 import ru.otus.kovaleva.transfer.service.core.backend.services.TransferService;
 
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,20 +17,31 @@ import java.util.stream.Collectors;
 public class TransfersController {
     private final TransferService transferService;
 
-    private final Function<Transfer, TransferDto> entityToDto = transfer ->
-            new TransferDto(transfer.getSourceAccountNumber(), transfer.getDestinationAccountNumber()
-            , transfer.getAmount(), transfer.getStatus().toString(), transfer.getDateTime());
-
     @Operation(summary = "Перевод между счетами")
     @PostMapping("/execute")
     public ExecuteTransferDtoResult executeTransfer(@RequestBody ExecuteTransferDtoRequest dtoRequest) {
-        return transferService.transfer(dtoRequest);
+        return toDto(transferService.transfer(dtoRequest));
     }
 
     @Operation(summary = "Получение информации о всех переводах пользователя")
     @GetMapping
     public TransferPageDto getAllTransfers(@RequestHeader Long clientId) {
-        return new TransferPageDto(transferService.getAllTransfersById(clientId).stream()
-                .map(entityToDto).collect(Collectors.toList()));
+        return toDto(transferService.getAllTransfersByClientId(clientId));
+    }
+
+    private ExecuteTransferDtoResult toDto(Transfer transfer) {
+        return new ExecuteTransferDtoResult(transfer.getSourceAccountNumber(),
+                transfer.getDestinationAccountNumber(),
+                transfer.getAmount());
+    }
+
+    private TransferPageDto toDto(List<Transfer> list) {
+        return new TransferPageDto(list.stream()
+                .map(transfer ->
+                        new TransferDto(transfer.getSourceAccountNumber(),
+                                transfer.getDestinationAccountNumber(),
+                                transfer.getAmount(),
+                                transfer.getStatus().toString(),
+                                transfer.getDateTime())).toList());
     }
 }

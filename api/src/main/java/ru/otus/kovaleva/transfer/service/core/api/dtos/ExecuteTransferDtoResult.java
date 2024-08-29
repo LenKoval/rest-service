@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-//описать
 @NoArgsConstructor
 @Data
 @Schema(description = "ДТО результат выполнения перевода")

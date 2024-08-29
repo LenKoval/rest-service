@@ -13,6 +13,6 @@ import java.util.List;
 @Schema(description = "Информация о переводах клиента")
 public class TransferPageDto {
 
-    @Schema(description = "Список переводов клиента")
+    @Schema(description = "Список переводов клиента", required = true)
     private List<TransferDto> items;
 }
